@@ -1,0 +1,627 @@
+{% extends "base.html" %}
+{% load static %}
+{% block links %}
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+{% endblock links %}
+{% block style %}
+<style>
+  body {
+    background-color: #0c0b09;
+  }
+
+  .warning_cancel {
+    background-color: whitesmoke;
+    border: none;
+    width: 20px;
+    border-radius: 4px;
+  }
+
+  .warning_cancel:hover {
+    background-color: #0c0b09;
+    color: aliceblue;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings:
+      'FILL' 1,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 48
+  }
+
+  .Cat {
+    display: flex;
+    width: 50%;
+    box-sizing: border-box;
+    margin: auto;
+    flex-shrink: 5;
+    justify-content: space-between;
+  }
+
+  .catsin {
+    background-color: #191919;
+    border: 0.5px solid #b07c22;
+    width: 200px;
+    text-align: center;
+    margin: 0px 4px;
+    border-radius: 10px;
+  }
+
+  .catsin:hover {
+    background-color: #430000;
+    background-color: #b07c22;
+  }
+
+  .search-button {
+    color: aliceblue;
+  }
+
+  .search-button:hover {
+    color: #b07c22;
+  }
+</style>
+{% endblock style %}
+{% block cart %}
+<li id="ccc" style="margin:0px 20px"><a class="nav-link scrollto"><button
+      style="background:none;border: none;color:white;display:flex;flex-direction:row;margin: 0px;"
+      class="material-symbols-outlined" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+      aria-controls="offcanvasRight">
+      shopping_bag
+      <span class="position-absolute top-0 start-100 translate-middle badge-sm rounded-circle bg-warning text-black"
+        style="font-family: 'El Messiri', sans-serif; font-size:smaller;padding:0px 4px;border-radius: 50%;">
+        {{request.session.cart|length}}
+        <span class="visually-hidden">unread messages</span>
+      </span>
+
+    </button></a></li>
+
+{% endblock cart %}
+{% block navlist %}
+
+<div style="box-sizing: border-box;margin: auto;width: 30%;z-index:2">
+  <form class="d-flex" role="search" method="get" action="/search/">
+    <input data-aos="zoom-in" class="form-control me-2" type="search" placeholder="Search"
+      style="border: none;border-radius: 20px;height: 30px;" aria-label="Search" name="query_pass" id="query_pass">
+    <button class="material-symbols-outlined search-button" style="border-radius: 20px;background:none;border: none"
+      type="submit">
+      search
+    </button>
+  </form>
+</div>
+{% endblock navlist %}
+{% block authcred %}
+{% if user.is_authenticated %}
+<li class="dropdown"><a><span class="material-symbols-outlined">account_circle</span></a>
+  <ul>
+    <li><a class="nav-link scrollto" href="auth/logout/">Logout</a></li>
+  </ul>
+</li>{% else %}
+<li class="dropdown"><a><span class="material-symbols-outlined">account_circle</span></a>
+  <ul>
+    <li><a class="nav-link scrollto" href="auth/signup/">Signup</a></li>
+    <li><a class="nav-link scrollto" href="auth/login/">Login</a></li>
+  </ul>
+</li>{% endif %}
+{% endblock authcred %}
+{% block quickbeer %}
+{% endblock quickbeer %}
+{% block body %}
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex align-items-center" style="flex-direction: column;">
+  <div class="container position-relative text-center text-lg-start" data-aos="zoom-in" data-aos-delay="100">
+    <div class="row" style="height: 20rem;display: flex;align-items: end;">
+      <div class="col-lg-8">
+        {% block infor %}
+        {% for diss in messages %}
+        <div style="display:block;">
+          <p class="warning_cancel_p"
+            style="margin:0%;background-color: rgb(255, 255, 255,0.01); color:white;text-align: center;width: 250px;border-radius: 4px;">
+            You have been loged in<button class="warning_cancel" onclick="disable()"
+              style="display: '{{diss}}';">x</button></p>
+        </div>
+        {% endfor %}
+        {% endblock infor %}
+        <div>
+          <h1>Welcome to <span>Sippit</span></h1>
+          <h2>Serving joy at your door steps</h2>
+        </div>
+
+      </div>
+      <div class="col-lg-4 d-flex align-items-center justify-content-center position-relative">
+        <a href="https://www.youtube.com/watch?v=u6BOC7CDUTQ" target="_blank" class="glightbox play-btn"></a>
+      </div>
+
+    </div>
+  </div>
+</section><!-- End Hero -->
+
+
+
+<main id="main">
+  <!-- ======= Menu Section ======= -->
+  <section id="menu" class=" menu section-bg">
+    <div class="container homeproducts" data-aos="fade-up">
+
+
+      <div class="Cat" data-aos="fade-up" data-aos-delay="10">
+        <a href="/?categor=" class="catsin">All</a>
+        {% for cat in categor %}
+        <a href="/?categor={{cat.id}}" class="catsin">{{cat.Category}}</a>
+        {%endfor%}
+        <a href="/products" class="catsin" style="width:250px;float: right;">View All-></a>
+      </div>
+
+      <div class="row menu-container" data-aos="fade-up" data-aos-delay="50">
+        {% for product in prods %}
+        <div class="col-lg-6 menu-item filter-beers">
+          <a href=""><img src="/media/{{product.image}}" height="80" class="menu-img" alt=""></a>
+          <div class="menu-content">
+            <a href="/product_view/{{product.id}}">{{product.name|slice:"0:16"}}</a><span>Rs.{{product.price}}</span>
+          </div>
+          <div class="menu-ingredients">
+            {{product.product_desc|slice:"0:50"}}
+          </div>
+        </div>
+
+        {% endfor %}
+
+
+      </div>
+
+    </div>
+  </section><!-- End Menu Section -->
+
+
+
+  <!-- ======= Why Us Section ======= -->
+  <section id="why-us" class="why-us">
+    <div class="container-fluid" data-aos="fade-up">
+
+      <div class="section-title">
+        <h2>Why Us</h2>
+        <p>Why Sippit</p>
+      </div>
+
+      <div class="rows" style="display: flex;flex-wrap: wrap;justify-content: space-evenly;">
+
+        <div class="" style="margin: 10px;">
+          <div class="box brand_div" data-aos="zoom-in" data-aos-delay="100">
+            <h4>Famous Beers</h4>
+            <div class="brands">
+              <a href="products/"><img src="static/assets/img/menu/beers/budweiser magnum.jpeg" class="menu-img"
+                  height="175px" width="175px" alt=""></a>
+              <a href="products/"><img src="static/assets/img/menu/beers/bad monkey.jpeg" class="menu-img"
+                  height="175px" width="175px" alt=""></a>
+              <a href="products/"><img src="static/assets/img/menu/beers/calsberg.jpg" class="menu-img" height="175px"
+                  width="175px" alt=""></a>
+              <a href="products/"><img src="static/assets/img/menu/beers/budweiser magnum.jpeg" class="menu-img"
+                  height="175px" width="175px" alt=""></a>
+            </div>
+          </div>
+        </div>
+        <div class="" style="margin: 10px;">
+          <div class="box brand_div" data-aos="zoom-in" data-aos-delay="100">
+            <h4>Famous Whisky</h4>
+            <div class="brands">
+              <a href="products/"><img src="static/assets/img/menu/whisky/black dog.jpeg" height="175px" width="175px"
+                  class="menu-img" alt=""></a>
+              <a href="products/"><img src="static/assets/img/menu/whisky/100 pipers.webp" height="175px" width="175px"
+                  class="menu-img" alt=""></a>
+              <a href="products/"><img src="static/assets/img/menu/whisky/8pm-whisky.jpg" height="175px" width="175px"
+                  class="menu-img" alt=""></a>
+              <a href="products/"><img src="static/assets/img/menu/whisky/black dog.jpeg" height="175px" width="175px"
+                  class="menu-img" alt=""></a>
+            </div>
+          </div>
+        </div>
+        <div class="" style="margin: 10px;">
+          <div class="box brand_div" data-aos="zoom-in" data-aos-delay="100">
+            <h4>Famous Rum</h4>
+            <div class="brands">
+              <a href="products/"><img src="static/assets/img/menu/beers/budweiser magnum.jpeg" class="menu-img"
+                  height="175px" width="175px" alt=""></a>
+              <a href="products/"><img src="static/assets/img/menu/beers/budweiser magnum.jpeg" class="menu-img"
+                  height="175px" width="175px" alt=""></a>
+              <a href="products/"><img src="static/assets/img/menu/beers/budweiser magnum.jpeg" class="menu-img"
+                  height="175px" width="175px" alt=""></a>
+              <a href="products/"><img src="static/assets/img/menu/beers/budweiser magnum.jpeg" class="menu-img"
+                  height="175px" width="175px" alt=""></a>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+  </section><!-- End Why Us Section -->
+
+
+
+  <!-- ======= About Section ======= -->
+  <section id="about" class="about">
+    <div class="container" data-aos="fade-up">
+
+      <div class="row">
+        <div class="col-lg-6 order-1 order-lg-2" data-aos="zoom-in" data-aos-delay="100">
+          <div class="about-img">
+            <a href="products/"><img src="static/assets/img/about.jpg" alt=""></a>
+          </div>
+        </div>
+        <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
+          <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
+          <p class="fst-italic">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore
+            magna aliqua.
+          </p>
+          <ul>
+            <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+            <li><i class="bi bi-check-circle"></i> Duis aute irure dolor in reprehenderit in voluptate velit.</li>
+            <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+              irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.
+            </li>
+          </ul>
+          <p>
+            Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section><!-- End About Section -->
+
+  <!-- ======= Gallery Section ======= -->
+  <section id="gallery" class="gallery">
+
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>Gallery</h2>
+      </div>
+    </div>
+
+    <div class="container-fluid" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row gal g-0">
+
+        <div class="col-lg-3 col-md-4">
+          <div class="gallery-item">
+            <a href="static/assets/img/gallery/gallery-1.jpg" class="gallery-lightbox" data-gall="gallery-item">
+              <a href="products/"><img src="static/assets/img/gallery/gallery-1.jpg" alt="" class="img-fluid">
+              </a>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4">
+          <div class="gallery-item">
+            <a href="static/assets/img/gallery/gallery-2.jpg" class="gallery-lightbox" data-gall="gallery-item">
+              <a href="products/"><img src="static/assets/img/gallery/gallery-2.jpg" alt="" class="img-fluid">
+              </a>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4">
+          <div class="gallery-item">
+            <a href="static/assets/img/gallery/gallery-3.jpg" class="gallery-lightbox" data-gall="gallery-item">
+              <a href="products/"><img src="static/assets/img/gallery/gallery-3.jpg" alt="" class="img-fluid">
+              </a>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4">
+          <div class="gallery-item">
+            <a href="static/assets/img/gallery/gallery-4.jpg" class="gallery-lightbox" data-gall="gallery-item">
+              <a href="products/"><img src="static/assets/img/gallery/gallery-4.jpg" alt="" class="img-fluid">
+              </a>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4">
+          <div class="gallery-item">
+            <a href="static/assets/img/gallery/gallery-5.jpg" class="gallery-lightbox" data-gall="gallery-item">
+              <a href="products/"><img src="static/assets/img/gallery/gallery-5.jpg" alt="" class="img-fluid">
+              </a>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4">
+          <div class="gallery-item">
+            <a href="static/assets/img/gallery/gallery-6.jpg" class="gallery-lightbox" data-gall="gallery-item">
+              <a href="products/"><img src="static/assets/img/gallery/gallery-6.jpg" alt="" class="img-fluid">
+              </a>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4">
+          <div class="gallery-item">
+            <a href="static/assets/img/gallery/gallery-7.jpg" class="gallery-lightbox" data-gall="gallery-item">
+              <a href="products/"><img src="static/assets/img/gallery/gallery-7.jpg" alt="" class="img-fluid">
+              </a>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4">
+          <div class="gallery-item">
+            <a href="static/assets/img/gallery/gallery-8.jpg" class="gallery-lightbox" data-gall="gallery-item">
+              <a href="products/"><img src="static/assets/img/gallery/gallery-8.jpg" alt="" class="img-fluid">
+              </a>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section><!-- End Gallery Section -->
+
+  <!-- ======= Chefs Section ======= -->
+  <section id="chefs" class="chefs">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-title">
+        <h2>Team</h2>
+        <p>Our Marvelous Team Leaders</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg-4 col-md-6">
+          <div class="member" data-aos="zoom-in" data-aos-delay="100">
+            <a href="products/"><img src="static/assets/img/chefs/chefs-1.jpg" class="img-fluid" alt=""></a>
+            <div class="member-info">
+              <div class="member-info-content">
+                <h4>Walter White</h4>
+                <span>Master Chef</span>
+              </div>
+              <div class="social">
+                <a href=""><i class="bi bi-twitter"></i></a>
+                <a href=""><i class="bi bi-facebook"></i></a>
+                <a href=""><i class="bi bi-instagram"></i></a>
+                <a href=""><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="member" data-aos="zoom-in" data-aos-delay="200">
+            <a href="products/"><img src="static/assets/img/chefs/chefs-2.jpg" class="img-fluid" alt=""></a>
+            <div class="member-info">
+              <div class="member-info-content">
+                <h4>Sarah Jhonson</h4>
+                <span>Patissier</span>
+              </div>
+              <div class="social">
+                <a href=""><i class="bi bi-twitter"></i></a>
+                <a href=""><i class="bi bi-facebook"></i></a>
+                <a href=""><i class="bi bi-instagram"></i></a>
+                <a href=""><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="member" data-aos="zoom-in" data-aos-delay="300">
+            <a href="products/"><img src="static/assets/img/chefs/chefs-3.jpg" class="img-fluid" alt=""></a>
+            <div class="member-info">
+              <div class="member-info-content">
+                <h4>William Anderson</h4>
+                <span>Cook</span>
+              </div>
+              <div class="social">
+                <a href=""><i class="bi bi-twitter"></i></a>
+                <a href=""><i class="bi bi-facebook"></i></a>
+                <a href=""><i class="bi bi-instagram"></i></a>
+                <a href=""><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section><!-- End Chefs Section -->
+
+  <!-- ======= Testimonials Section ======= -->
+  <section id="testimonials" class="testimonials section-bg">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-title">
+        <h2>Testimonials</h2>
+        <p>Connsumer Opinion</p>
+      </div>
+
+      <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+        <div class="swiper-wrapper">
+
+          <div class="swiper-slide">
+            <div class="testimonial-item">
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium
+                quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+              <a href="products/"><img src="static/assets/img/testimonials/testimonials-1.jpg" class="testimonial-img"
+                  alt=""></a>
+              <h3>Saul Goodman</h3>
+              <h4>Ceo &amp; Founder</h4>
+            </div>
+          </div><!-- End testimonial item -->
+
+          <div class="swiper-slide">
+            <div class="testimonial-item">
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis
+                quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+              <a href="products/"><img src="static/assets/img/testimonials/testimonials-2.jpg" class="testimonial-img"
+                  alt=""></a>
+              <h3>Sara Wilsson</h3>
+              <h4>Designer</h4>
+            </div>
+          </div><!-- End testimonial item -->
+
+          <div class="swiper-slide">
+            <div class="testimonial-item">
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor
+                labore quem eram duis noster aute amet eram fore quis sint minim.
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+              <a href="products/"><img src="static/assets/img/testimonials/testimonials-3.jpg" class="testimonial-img"
+                  alt=""></a>
+              <h3>Jena Karlis</h3>
+              <h4>Store Owner</h4>
+            </div>
+          </div><!-- End testimonial item -->
+
+          <div class="swiper-slide">
+            <div class="testimonial-item">
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim
+                dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+              <a href="products/"><img src="static/assets/img/testimonials/testimonials-4.jpg" class="testimonial-img"
+                  alt=""></a>
+              <h3>Matt Brandon</h3>
+              <h4>Freelancer</h4>
+            </div>
+          </div><!-- End testimonial item -->
+
+          <div class="swiper-slide">
+            <div class="testimonial-item">
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa
+                labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+              <a href="products/"><img src="static/assets/img/testimonials/testimonials-5.jpg" class="testimonial-img"
+                  alt=""></a>
+              <h3>John Larson</h3>
+              <h4>Entrepreneur</h4>
+            </div>
+          </div><!-- End testimonial item -->
+
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+
+    </div>
+  </section><!-- End Testimonials Section -->
+
+
+  {% if user.is_authenticated %}
+  <!-- ======= Contact Section ======= -->
+  <section id="contact" class="contact">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-title">
+        <h2>Contact</h2>
+        <p>Contact Us</p>
+      </div>
+    </div>
+
+    <!-- <div data-aos="fade-up">
+        <iframe style="border:0; width: 100%; height: 350px;" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" allowfullscreen></iframe>
+      </div> -->
+
+    <div class="container" data-aos="fade-up">
+
+      <div class="row mt-5">
+
+        <div class="col-lg-4">
+          <div class="info">
+            <div class="address">
+              <i class="bi bi-geo-alt"></i>
+              <h4>Location:</h4>
+              <p>A108 Adam Street, New York, NY 535022</p>
+            </div>
+
+            <div class="open-hours">
+              <i class="bi bi-clock"></i>
+              <h4>Open Hours:</h4>
+              <p>
+                Monday-Saturday:<br>
+                11:00 AM - 2300 PM
+              </p>
+            </div>
+
+            <div class="email">
+              <i class="bi bi-envelope"></i>
+              <h4>Email:</h4>
+              <p>info@example.com</p>
+            </div>
+
+            <div class="phone">
+              <i class="bi bi-phone"></i>
+              <h4>Call:</h4>
+              <p>+1 5589 55488 55s</p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-lg-8 mt-5 mt-lg-0">
+
+          <form action="static/forms/contact.php" method="post" role="form" class="php-email-form">
+            <div class="row">
+              {% comment %} <div class="col-md-6 form-group">
+                <input type="text" name="name" class="form-control" id="name" placeholder="{{user.email}}" required>
+              </div> {% endcomment %}
+              <div class="col-md-6 form-group mt-3 mt-md-0">
+                <input type="email" class="form-control" name="email" readonly id="email" placeholder="{{user.email}}"
+                  required>
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+            </div>
+            <div class="form-group mt-3">
+              <textarea class="form-control" name="message" rows="8" placeholder="Message" required></textarea>
+            </div>
+            <div class="my-3">
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Your message has been sent. Thank you!</div>
+            </div>
+            <div class="text-center"><button type="submit">Send Message</button></div>
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section><!-- End Contact Section -->
+  {% endif %}
+
+</main><!-- End #main -->
+
+{% endblock body %}
+<script>
+  // disable()
+  const disable = () => {
+    document.querySelector('.warning_cancel').style.display = 'none';
+    document.querySelector('.warning_cancel_p').style.display = 'none';
+  }
+</script>

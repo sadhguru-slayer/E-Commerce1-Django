@@ -1,0 +1,14 @@
+{% comment %} JS for scroll up stop {% endcomment %}
+let sidebar = document.getElementsByClassName("sidebar")[0];
+let sidebar_content=document.getElementsByClassName("content-wrapper")[0];
+window.onscroll = () => {
+let scrollTop-window.scrolly;
+let viewportHeight = window.innerHeight;
+let contentHeight = sidebar_content.getBoundingClientRect().height;
+let sidebarTop-sidebar.getBoundingClientRect().top+window.pageYoffset;
+if(scrollTop >=contentHeight - viewportHeight + sidebarTop)
+sidebar_content.style.transform translateY(-${contentHeight - viewportHeight + sidebarTop}px); sidebar_content.style.position= "fixed";
+else {
+}
+sidebar_content.style.transform = ""; sidebar_content.style.position="";
+}

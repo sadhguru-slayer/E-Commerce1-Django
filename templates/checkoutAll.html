@@ -1,0 +1,180 @@
+{% extends 'inner-pages.html' %}
+{% block style %}
+<style>
+    li {
+        list-style: none;
+    }
+
+    .your-order-product-info {
+        background-color: #191919;
+        padding: 20px;
+    }
+
+    hr {
+        color: #b07c22;
+    }
+
+    .form-control {
+        background-color: #191919;
+        color: #fff;
+        border: 1px solid #b07c22;
+    }
+
+    .form-control:active,
+    .form-control:focus {
+        background-color: #191919;
+        border: 1px solid #b07c22;
+        box-shadow: #b07c22;
+        color: #fff;
+
+    }
+
+    .input-group-text {
+        background-color: #b07c22;
+        border: 1px solid #b07c22;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        display: none;
+    }
+
+    button {
+        width: 6rem;
+        border: none;
+        border-radius: 10px;
+        margin: 3px;
+        padding: 3px;
+        background-color: #b07c22;
+    }
+
+    button:hover {
+        background-color: #ffc469;
+    }
+</style>
+
+{% endblock style %}
+{% block breadcrumbs %}<section class="breadcrumbs">
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>Checkout</h2>
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Checkout</li>
+            </ol>
+        </div>
+
+    </div>
+</section>
+{% endblock breadcrumbs %}
+{% block body %}
+
+<!-- checkout area start -->
+<div class="checkout-area pt-100px pb-100px container mt-5">
+    <div class="container">
+        {% load cart_tag %}
+
+        <form action="/place_order/" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="billing-info-wrap col-lg-7">
+                    <h3>Billing Details</h3>
+                    <div class="row">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon0">Email</span>
+                            <input type="text" class="form-control" name="Email" value="{{user.email}}" readonly>
+                            <span class="input-group-text">Username</span>
+                            <input type="text" class="form-control" name="Username" placeholder="Username">
+                        </div>
+
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">State</span>
+                            <input type="text" class="form-control" name="State" aria-describedby="basic-addon1"
+                                required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">City</span>
+                            <input type="text" class="form-control" name="City" aria-describedby="basic-addon1"
+                                required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Zip-Code</span>
+                            <input type="Number" class="form-control" name="Zip-Code" aria-describedby="basic-addon1"
+                                required>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Phone Number</span>
+                            <input type="Number" class="form-control" name="phone" aria-describedby="basic-addon1"
+                                required>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Address</span>
+                            <textarea class="form-control" name="Address" required></textarea>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text">Additional Information</span>
+                            <textarea style="color: #fff;" name="Add_Info" class="form-control"></textarea>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-5 mt-md-30px mt-lm-30px ">
+                    <div class="your-order-area">
+                        <div class="your-order-wrap gray-bg-4">
+                            <div class="your-order-product-info">
+                                <h3 class="text-center">Your order</h3>
+                                <hr>
+                                <div class="your-order-top">
+                                    <ul class="d-flex justify-content-between">
+                                        <li>Product</li>
+                                        <li>Total</li>
+                                    </ul>
+                                </div>
+                                <hr>
+                                {% for key,value in request.session.cart.items %}
+                                <div class="your-order-middle">
+                                    <ul class="d-flex justify-content-between">
+                                        <li><span class="order-middle-left">{{value.name|slice:"0:17"}} </span></li>
+                                        <li><span>{{value.volume}} </span></li>
+
+                                        <li><span>x {{value.quantity}} </span></li>
+                                        <li> <span class="order-price">Rs. {{ value.price|multiply:value.quantity }}
+                                            </span></li>
+                                    </ul>
+                                </div>
+                                {% endfor %}
+                                <hr>
+                                <div class="your-order-bottom">
+                                    <ul class="d-flex justify-content-between">
+                                        <li class="your-order-shipping">Shipping</li>
+                                        <li>Free shipping</li>
+                                    </ul>
+                                </div>
+                                <hr>
+                                <div class="your-order-total">
+                                    <ul class="d-flex justify-content-between">
+                                        <li class="order-total">Total</li>
+                                        <li>Rs.{{cart_total_amount}}</li>
+                                    </ul>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="Place-order mt-25">
+                                <button type="submit">Place-order</button>
+                            </div>
+                            <input type="text" name="payment" value="{{payment}}" readonly hidden>
+                            <input type="text" name="order_id" value="{{order_id}}" readonly hidden>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- checkout area end -->
+    {% endblock body %}

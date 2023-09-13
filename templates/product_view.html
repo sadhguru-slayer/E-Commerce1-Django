@@ -1,0 +1,99 @@
+{% extends 'inner-pages.html' %}
+{% block title %}
+Products{% endblock title %}
+{% block style %}
+<style>
+  .modal-lg {
+    width: 5em;
+    margin: auto;
+  }
+</style>
+{% endblock style %}
+{% block search %}
+<form class="d-flex" role="search" method="get" action="/search/">
+  <input class="form-control me-2" type="search" placeholder="Search" style="border: none;border-radius: 20px;"
+    aria-label="Search" name="query_pass" id="query_pass">
+  <button class="btn search-button" style="background-color:#b07c22;border-radius: 20px;" type="submit">Search</button>
+</form>
+{% endblock search %}
+{% block cart %}
+
+{% comment %} <li id="ccc" style="margin:0px 20px"><a class="nav-link scrollto"><button
+      style="background:none;border: none;color:white;display:flex;flex-direction:row;margin: 0px;"
+      class="material-symbols-outlined" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+      aria-controls="offcanvasRight">
+      shopping_bag
+      <span class="position-absolute top-0 start-100 translate-middle badge-sm rounded-circle bg-warning text-black"
+        style="font-family: 'El Messiri', sans-serif; font-size:smaller;padding:0px 4px;border-radius: 50%;">
+        {{request.session.cart|length}}
+        <span class="visually-hidden">unread messages</span>
+      </span>
+
+    </button></a></li> {% endcomment %}
+{% endblock cart %}
+{% block body %}
+{% load static %}
+{% comment %} {% load static %} {% endcomment %}
+<section id="why-us" class="why-us" style="margin-top: 4em;padding: 40px;margin: 30px;padding-top: 5rem;">
+  <div class="container-fluid" data-aos="fade-up" style="display: flex;flex-direction: column;">
+    <div style="display: flex;">
+      <div class="section-title" style="flex-grow: 2;">
+        <h2>Wellcome to Product view</h2>
+        <p>Enjoy the taste of {{prod_view.name}}</p>
+      </div>
+
+    </div>
+    <div class="mennu" style="display: flex;background-color: #191919;width: 70%;padding: 3rem;height: 30rem;">
+      <div class="prods">
+        <div class="">
+          <div class="box_menus" style="display:flex;justify-content: space-between;">
+            <div>
+              <img src="/media/{{prod_view.image}}" class="card-img-top" alt="not found"
+                style="border-radius: 10px;height: 350px;width: 300px;" />
+            </div>
+            <div data-aos="flip-up" data-aos-delay="50"
+              style="border-left: 1px solid #b07c22;margin: 0px 10px;display: flex;flex-direction: column;padding: 0px 10px;">
+              <h2 class="card-title mt-2" id="namepr{{i.id}}"
+                style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: #b07c22;">
+                {{prod_view.name}}
+              </h2>
+              <h3>{{prod_view.product_categore}}</h3>
+              <hr>
+              <p style="color: aliceblue;">{{prod_view.product_desc}}</p>
+              <div style="display: flex;justify-content: space-evenly;">
+                <h4 style="color: #b07c22;">
+                  <hr>
+                  Price : <span>{{prod_view.price}} &#8377;</span>
+                </h4>
+                <h5 style="color: #b07c22;">
+                  <hr>
+                  Volume(ml) : <span>{{prod_view.volume}} ml</span>
+                </h5>
+                <h4></h4>
+              </div>
+              <span style="display: flex;justify-content: space-evenly;">
+                <button class="btn btn-warning cart mt-0" style="border: none;">
+                  Buy Now <i class="fa-solid fa-cart-shopping"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock body %}
+
+<!-- End Sippit_products Section -->
+{% block script %}
+
+<script>
+  function activefun() {
+    let Filterlist = document.querySelector('.sort').classList.add('active')
+    console.log(Filterlist)
+  }
+  activefun()
+</script>
+{% endblock script %}

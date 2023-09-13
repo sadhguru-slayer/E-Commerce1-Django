@@ -1,0 +1,289 @@
+{% extends 'Prod/Baw.html' %}
+{% load static %}
+{% block links %}
+<!-- <link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..800,0..1,-50..300" /> -->
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+{% endblock links %}
+{% block style %}
+<style>
+  * {
+    padding: 20px 0px;
+  }
+
+  #prod_view:hover {
+    border: solid aliceblue;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings:
+      'FILL' 1,
+      'wght' 700,
+      'GRAD' 0,
+      'opsz' 48
+  }
+
+  #ccc {
+    margin-right: 500px;
+  }
+
+  h5,
+  h3,
+  h4 {
+    color: #b07c22;
+  }
+</style>
+{% endblock style %}
+
+{% block title %}
+Home
+{% endblock title %}
+{% block content %}
+
+<h1>Welcome to Sippit</h1>
+
+{% endblock content %}
+{% block cart %}
+
+<li id="ccc" style="margin:0px 20px"><a class="nav-link scrollto"><button
+      style="background:black;color:white;display:flex;flex-direction:row;margin: 0px;"
+      class="material-symbols-outlined" id="popcart" data-container="body" data-toggle="popover" data-placement="bottom"
+      data-html="true">
+      shopping_bag
+      <span class="position-absolute top-1 bottom-3 start-100 translate-middle badge-sm rounded-circle  bg-danger "
+        style="padding: 0px 10px;max-height: 30px;margin-right: 20px;">
+        <span style="font-family: 'El Messiri', sans-serif; font-size: medium;" id="cart">0</span>
+        <span class="visually-hidden">unread messages</span>
+      </span>
+    </button></a></li>
+{% endblock cart %}
+{% block body %}
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex align-items-center">
+  <div class="container position-relative text-center text-lg-start" data-aos="zoom-in" data-aos-delay="100">
+    <div class="row">
+      <div class="col-lg-8">
+        {% block infor %}
+        {% endblock infor %}
+        <h1>Welcome to <span>Sippit-Menu</span></h1>
+        <h2>Delivering liquor at your door steps</h2>
+      </div>
+      <div class="col-lg-4 d-flex align-items-center justify-content-center position-relative" data-aos="zoom-in"
+        data-aos-delay="200">
+        <a href="https://www.youtube.com/watch?v=u6BOC7CDUTQ" class="glightbox play-btn"></a>
+      </div>
+    </div>
+  </div>
+</section><!-- End Hero -->
+
+{% load static %}
+<section id="why-us" class="why-us">
+  <div class="container" data-aos="fade-up" style="display: flex;flex-direction: column;">
+
+    <div class="section-title">
+      <h2>Wellcome to store</h2>
+      <p>Sippit provides..</p>
+    </div>
+    <div class="mennu" style="display: flex;">
+      <div class="adds_filters">
+      <div class="heads" data-aos="flip-up" style="display:inline">
+        <h3 class="my-2 text-center text-light"
+          style="border-radius: 10px;position: relative;background-color:#b07c22;">
+          Filters
+        </h3>
+      </div>
+      <div class="filters_menu">
+        <!-- <h4>Filters</h4> -->
+        <div class="Types">
+          <hr style="color: #b07c22;">
+          <h5>Types</h5>
+          <hr style="color: #b07c22;">
+          <ul>
+            <a href=""><li class="Types_list active">All</li></a>
+            {% for cat in categories %}
+            <a href="/menu/?categories={{cat.id}}"><li class="Types_list">{{cat.Category}}</li></a>
+            {% endfor %}
+          </ul>
+          </div>
+          <div class="Brands">
+            <hr style="color: #b07c22;">
+            <h5>Brands</h5>
+          <hr style="color: #b07c22;">
+
+            <ul>
+              <!-- <li class="Brands_list active">All</li> -->
+              {% for bra in brands %}
+            <a href=""><li class="Brands_list">{{bra.Brand_name}}</li></a>
+            {% endfor %}
+            </ul>
+          </div>
+          <div class="Price">
+            <hr style="color: #b07c22;">
+            <h5>Prices</h5>
+          <hr style="color: #b07c22;">
+            <ul>
+              <a href=""><li class="Price_list active">All</li></a>
+              {% for pri in prices %}
+            <a href=""><li class="Price_list">{{pri.price}}</li></a>
+            {% endfor %}
+            </ul>
+          </div>
+          <div class="Volume">
+            <hr style="color: #b07c22;">
+            <h5>Volumes</h5>
+          <hr style="color: #b07c22;">
+            <ul>
+              {% for vol in volume %}
+            <a href=""><li class="Volume_list">{{vol.Volume}}</li></a>
+            {% endfor %}
+            </ul>
+          </div>
+          </div>
+        </div>
+          <div class="prods">
+
+            {% for product in allProds %}
+            <div class="heads" data-aos="flip-up" style="display:block">
+              <h3 class="my-2 text-center text-light"
+                style="border-radius: 10px;position: relative;background-color:#b07c22;">
+                {{product.0.product_categore}}
+              </h3>
+            </div>
+            <div class="row" style="display: flex; flex-wrap: wrap;">
+              {% for i in product %}
+              <div class="col-lg-4 mt-4 mt-lg-0" style="margin: 20px 0px;">
+                <div class="box_menu">
+                  <img src="/media/{{i.product_image}}" class="card-img-top" alt="not found" height="150" width="auto"
+                    style="border-radius: 10px;" />
+                  <div data-aos="flip-up" data-aos-delay="50" style="padding: 0%;">
+                    <h6 class="card-title mt-2" id="namepr{{i.id}}"
+                      style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                      {{i.product_name|slice:"0:16"}}..</h6>
+                    <p style="font-size: small;">{{i.product_desc|slice:"0:50"}}...</p>
+                    <h7>
+                      Price:<span id="pricepr{{i.id}}">{{i.product_price}}</span>
+                    </h7>
+                    <span id="divpr{{i.id}}" class="divpr" style="display: flex;">
+                      <button id="pr{{i.id}}" class="btn btn-warning cart mt-0" style="border: none;">
+                        AddToCart <i class="fa-solid fa-cart-shopping"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {%endfor%}
+            </div>
+            {%endfor%}
+          </div>
+        </div>
+      </div>
+</section>
+hidden
+<!-- End Sippit_products Section -->
+<script>
+  if (localStorage.getItem('cart') == null) {
+    var cart = {};
+  } else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+    updateCart(cart);
+
+  }
+  // add or increment code
+
+  // $('.cart').click(function() {
+  $('.divpr').on('click', 'button.cart', function () {
+    var idstr = this.id.toString();
+    console.log(idstr)
+
+    if (cart[idstr] != undefined) {
+      qty = cart[idstr][0] + 1;
+
+    } else {
+      qty = 1;
+      name = document.getElementById('name' + idstr).innerHTML;
+      price = document.getElementById('price' + idstr).innerHTML;
+      cart[idstr] = [qty, name, price];
+
+    }
+    updateCart(cart);
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    document.getElementById('cart').innerHTML = Object.keys(cart).length;
+    console.log(Object.keys(cart).length)
+    document.getElementById("popcart").click();
+  });
+  // add pop over to cart
+
+  $('#popcart').popover();
+
+  // updatePopover(cart);
+  function updatePopover(cart) {
+
+
+    console.log('we are  inside update popover');
+
+    var popStr = "";
+    var popStr = popStr + "<h5 style='font-family: 'Open Sans', sans-serif;'>Sippit Cart</h5> <div class='mx-2 my-2'>";
+    var i = 1;
+    for (var item in cart) {
+      popStr = popStr + "<b>" + i + "</b>. ";
+      popStr = popStr + document.getElementById('name' + item).innerHTML.slice(0, 19) + "..." + "<b>" + cart[item][0] + "</b>" + "Qty" + '<br>';
+      i = i + 1;
+    }
+
+    popStr = popStr + "</div> <a href='/checkout'><button class='btn btn-success' id='clearCart'>Checkout</button></a>  <button class='btn btn-dark' onclick='clearCart()' id='clearCart'>ClearCart</button>"
+    document.getElementById('popcart').setAttribute('data-content', popStr);
+    $('#popcart').popover('show');
+    document.getElementById("popcart").click();
+  }
+
+  function clearCart() {
+    cart = JSON.parse(localStorage.getItem('cart'));
+    for (var item in cart) {
+      document.getElementById('div' + item).innerHTML = '<button id="' + item + '" class="btn btn-warning cart">AddtoCard <i class="fa-solid fa-cart-shopping"></i></button>'
+    }
+    localStorage.clear();
+    cart = {};
+    updateCart(cart);
+
+    let clear = document.getElementById("popcart").click();
+    document.getElementById("popcart").click();
+
+  }
+  function updateCart(cart) {
+    var sum = 0;
+    for (var item in cart) {
+      sum = sum + cart[item][0];
+      document.getElementById('div' + item).innerHTML = "<button id='minus" + item + "'class='btn btn-success minus'>-</button> <span id='val" + item + "'>" + cart[item][0] + "</span> <button id='plus" + item + "' class='btn btn-success plus'> + </button>";
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    document.getElementById('cart').innerHTML = sum;
+    console.log(cart);
+    updatePopover(cart);
+    document.getElementById("popcart").click();
+  }
+  //if plus or minus button is clicked change the cart as well as the display value
+  $('.divpr').on("click", "button.minus", function () {
+    a = this.id.slice(7,);
+    cart['pr' + a][0] = cart['pr' + a][0] - 1;
+    cart['pr' + a][0] = Math.max(0, cart['pr' + a][0]);
+    document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
+    updateCart(cart);
+  })
+  $('.divpr').on("click", "button.plus", function () {
+
+    a = this.id.slice(6,);
+    cart['pr' + a][0] = cart['pr' + a][0] + 1;
+
+    document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
+    updateCart(cart);
+
+
+  })
+</script>
+
+{% endblock body %}
+
+

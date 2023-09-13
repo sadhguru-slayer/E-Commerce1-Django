@@ -1,0 +1,94 @@
+{% extends 'inner-pages.html' %}
+Total Length :: {{request.session.cart|length}}
+{% load cart_tag %}
+{% block body %}
+<style>
+    tr th {
+        padding: 10px;
+    }
+
+    tr,
+    tfoot {
+        border-radius: 10px;
+    }
+
+    button {
+        width: 6rem;
+        border: none;
+        border-radius: 10px;
+        margin: 3px;
+        padding: 3px;
+        background-color: #b07c22;
+    }
+
+    button:hover {
+        background-color: #ffc469;
+    }
+</style>
+<div class="container cart-main-area pt-100px pb-100px">
+    <div class="container">
+        <h3 class="cart-page-title" style="text-align: center;background-color: #191919;margin-top: 20px;">Your cart
+            items</h3>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <form action="/products/" method="post">
+                    {% csrf_token %}
+                    <div class="table-content table-responsive cart-table-content">
+                        <table width="100%">
+                            <thead>
+                                <tr style="background-color: #191919;width: 100%;border-radius: 10px;">
+                                    <th>Image</th>
+                                    <th>Product Name</th>
+                                    <th>Until Price</th>
+                                    <th>Qty</th>
+                                    <th>Subtotal</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key,value in request.session.cart.items %}
+                                <tr style="height: 150px;">
+
+                                    <td class="product-thumbnail">
+                                        <a href="#"><img class="img-responsive ml-15px" src="{{value.image}} "
+                                                height="100" width="100" style="border-radius: 10px;" alt="$" /></a>
+
+                                    </td>
+                                    <td class="product-name"><a href="#">{{value.name}} </a></td>
+                                    <td class="product-price-cart"><span class="amount">Rs.{{value.price}}</span></td>
+                                    <td class="card-quantity">
+                                        <div class="card_quantity_button"
+                                            style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                                            <input class="cart-plus-minus-box form-control-plaintext" type="text"
+                                                style="text-align:center;color:#b07c22" name="qtybutton"
+                                                value="{{value.quantity}}" width="50%" readonly>
+
+                                        </div>
+                                        <hr style="color: #b07c22;">
+
+                                    </td>
+                                    <td class="product-subtotal">Rs. {{ value.price|multiply:value.quantity }}</td>
+                                    <td class="product-remove">
+                                        <a href="#"><i class="fa fa-pencil">NA</i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot style="background-color: #191919;">
+
+                                <td style="padding: 10px;">
+                                    <div class="total">Total: {{cart_total_amount}}</div>
+                                </td>
+                                <input type="text" value="{{cart_total_amount}}" hidden readonly name="amount">
+                            </tfoot>
+                        </table>
+
+                    </div>
+                    <button type="submit">purchase</button>
+                </form>
+                <hr style="color: #191919;">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

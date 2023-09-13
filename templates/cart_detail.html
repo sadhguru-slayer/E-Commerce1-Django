@@ -1,0 +1,195 @@
+{% extends 'inner-pages.html' %}
+{% load cart_tag %}
+Total Length :: {{request.session.cart|length}}
+
+{% block style %}
+<style>
+    tr {
+        margin: 12px 2px;
+    }
+
+    .upsdown {
+        width: 80px;
+        color: #191919;
+        border: none;
+        text-align: center;
+        background: #ffcb6b;
+        border-radius: 10px;
+    }
+
+    button {
+        width: 200px;
+        background-color: #191919;
+        margin: 0px 12px;
+        color: #b07c22;
+        border: 0.8px solid #b07c22;
+        border-radius: 20px;
+        height: 40px;
+    }
+
+    button:hover {
+        background-color: #b07c22;
+        color: #191919;
+    }
+</style>
+{% endblock style %}
+
+{% block navlist %}
+<li><a class="nav-link scrollto" href="/products/">Products</a></li>
+{% endblock navlist %}
+{% block breadcrumbs %}<section class="breadcrumbs">
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>Checkout</h2>
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Sippit Cart</li>
+            </ol>
+        </div>
+
+    </div>
+</section>
+{% endblock breadcrumbs %}
+{% block body %}
+{% load static %}
+
+<!-- Cart Area Start -->
+{% if request.session.cart|length < 1 %} <div style="display: flex;width: 100%;justify-content: center;">
+    <img src="/static/assets/img/empty-cart-icon.png" height="100" width="100" alt="" srcset="">
+    </div>
+    <div style="display: flex;justify-content: center;margin: 30px 0px;">
+        <h4>Your Cart is empty</h4>
+        <a href="/products/"><button>Contine Shopping</button></a>
+    </div>
+    {% else %}
+    <div class="container cart-main-area pt-100px pb-100px">
+        <div class="container">
+            <h3 class="cart-page-title" style="text-align: center;background-color: #191919;margin-top: 20px;">Your cart
+                items</h3>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <form action="#">
+                        <div class="table-content table-responsive cart-table-content">
+                            <table width="100%">
+                                <thead>
+                                    <tr style="background-color: #191919;width: 100%;">
+                                        <th>Image</th>
+                                        <th>Product Name</th>
+                                        <th>Until Price</th>
+                                        <th>Qty</th>
+                                        <th>Subtotal</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for key,value in request.session.cart.items %}
+                                    <tr style="margin: 100px 0px;">
+
+                                        <td class="product-thumbnail">
+                                            <a href="#"><img class="img-responsive ml-15px" src="{{value.image}} "
+                                                    height="100" width="100" style="border-radius: 10px;" alt="$" /></a>
+
+                                        </td>
+                                        <td class="product-name"><a href="#">{{value.name}} </a></td>
+                                        <td class="product-price-cart"><span class="amount">Rs.{{value.price}}</span>
+                                        </td>
+                                        <td class="card-quantity">
+                                            <div class="card_quantity_button"
+                                                style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                                                {% if value.quantity > 1 %}
+
+                                                <a href="{% url 'item_decrement' value.product_id %}">
+                                                    <div class="card_quantity_down upsdown" id="down">-</div>
+                                                </a>
+                                                {% else %}
+                                                <a>
+                                                    <div class="card_quantity_down upsdown" id="down"
+                                                        style="background-color:rgb(255, 231, 185);color: #ffe3b0 ;">-
+                                                    </div>
+                                                </a>
+                                                {% endif %}
+
+                                                <input class="cart-plus-minus-box form-control-plaintext" type="text"
+                                                    style="text-align:center;color:#b07c22" name="qtybutton"
+                                                    value="{{value.quantity}}" width="50%">
+                                                <!-- {{value.quantity}} -->
+                                                <a href="{% url 'item_increment' value.product_id %}">
+                                                    <div class="card_quantity_up upsdown">+</div>
+                                                </a>
+
+                                            </div>
+                                            <hr style="color: #b07c22;">
+
+                                        </td>
+                                        <td class="product-subtotal">Rs. {{ value.price|multiply:value.quantity }}</td>
+                                        <td class="product-remove">
+                                            <!-- <a href="#"><i class="fa fa-pencil">edit</i></a>  -->
+                                            <a href="{% url 'item_clear' key  %} "><i class="fa fa-times"
+                                                    style="font-size: x-large;font-style:normal;">X</i></a>
+
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="total" style="float: right;">Total : {{cart_total_amount}}</div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="cart-shiping-update-wrapper"
+                                    style="display: flex;justify-content: space-evenly;">
+                                    <div class="cart-shiping-update">
+                                        <a href="/checkout/"><button> Continue Shopping</button></a>
+                                    </div>
+                                    <!-- <div class="cart-clear">
+                                        <a href="{% url 'cart_clear' %}"><button>Clear Shopping Cart</button></a>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <hr style="color: #191919;">
+                    <div class="row" style="margin: 30px;;justify-content: center;align-items: center;padding: 30px;">
+
+                        <div class="col-lg-4 col-md-12 mt-md-30px">
+                            <div class="grand-totall">
+                                <div class="title-wrap">
+                                    <h4 class="cart-bottom-title section-bg-gary-cart"
+                                        style="background-color: #b07c22;color: #191919;text-align: center;">Cart Total
+                                    </h4>
+                                </div>
+                                <div style="background-color: #191919;">
+                                    <h5 style="text-align: center;color: #b07c22">Total products-- <span
+                                            style="color: #fff;">Rs.{{cart_total_amount}}</span></h5>
+                                    <hr style="color: #b07c22;">
+                                    <hr style="color: #b07c22;">
+
+                                    <h4 class="grand-totall-title" style="text-align: center;color: #b07c22">Grand Total
+                                        <span style="color: #fff;">Rs.{{cart_total_amount|add:20|add:30}}</span></h4>
+                                    <hr style="color: #b07c22;">
+                                    <div style="display: flex;justify-content: center;">
+                                        <a href="/checkout/"><button> Proceed to Checkout </button></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cart Area End -->
+    {% endif %}
+    <script>
+        function getVal() {
+            const val = document.querySelector("#qtybutton").value;
+            console.log(val);
+        }
+        // console.log()
+        getVal()
+    </script>
+
+    {% endblock body %}

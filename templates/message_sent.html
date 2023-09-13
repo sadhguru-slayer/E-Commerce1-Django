@@ -1,0 +1,17 @@
+{% extends 'inner-pages.html' %}
+
+{% block body %}
+<div class="container" style="display:flex;margin-top:7rem;justify-content: center;">
+<div style="height: 80px;">
+</div>
+{% comment %} {% for mes in messages %} {% endcomment %}
+               <p class="warning_cancel_p" style="color:#b07c22;text-align: center;width: 250px;height: 80px;border-radius: 4px">{{messages}} <button class="warning_cancel" onclick="disable()" style="display:'{{diss}}'; background: #191919;width:20px;border-radius: 10px; color: aliceblue;">x</button></p>
+           <a href="/products/" style="text-decoration: none;"><button style="background-color: #b07c22;color: aliceblue;width: 60px;height: 30px;border: none;border-radius: 10px;"><-</button>Click here to go to Sippit Menu</a>
+</div>
+          <script>
+            const disable=()=>{
+                document.querySelector('.warning_cancel').style.display='none';
+                document.querySelector('.warning_cancel_p').style.display='none';
+            }
+          </script>
+{% endblock body %}

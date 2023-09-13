@@ -1,0 +1,278 @@
+{% extends 'inner-pages.html' %}
+{% block title %}
+Products{% endblock title %}
+{% block style %}
+<style>
+  .modal-lg {
+    width: 50em;
+    margin: auto;
+  }
+
+  .eye:hover {
+    color: #191919;
+  }
+
+  .cart_buttons {
+    width: 100px;
+    background-color: #191919;
+    height: 30px;
+    margin: 0px 12px;
+    color: #b07c22;
+    border: 0.5px solid #b07c22;
+    border-radius: 20px;
+  }
+
+  .cart_buttons:hover {
+    background-color: #b07c22;
+    color: #191919;
+  }
+
+  .list {
+    font-size: small;
+    margin: 4px;
+  }
+
+  li {
+    color: #fff;
+  }
+
+  a {
+    color: #ffc469;
+  }
+</style>
+{% endblock style %}
+{% block search %}
+<form class="d-flex" role="search" method="get" action="/search/">
+  <input class="form-control me-2" type="search" placeholder="Search" style="border: none;border-radius: 20px;"
+    aria-label="Search" name="query_pass" id="query_pass">
+  <button class="btn search-button" style="background-color:#b07c22;border-radius: 20px;" type="submit">Search</button>
+</form>
+{% endblock search %}
+{% block cart %}
+
+<li id="ccc" style="margin:0px 20px"><a class="nav-link scrollto"><button
+      style="background:none;border: none;color:white;display:flex;flex-direction:row;margin: 0px;"
+      class="material-symbols-outlined" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+      aria-controls="offcanvasRight">
+      shopping_bag
+      <span class="position-absolute top-0 start-100 translate-middle badge-sm rounded-circle bg-warning text-black"
+        style="font-family: 'El Messiri', sans-serif; font-size:smaller;padding:0px 4px;border-radius: 50%;">
+        {{request.session.cart|length}}
+        <span class="visually-hidden">unread messages</span>
+      </span>
+
+    </button></a></li>
+
+
+{% endblock cart %}
+{% block navlist %}
+<li><a class="nav-link scrollto" href="/contact/">Contact</a></li>
+{% endblock navlist %}
+{% block body %}
+{% load static %}
+
+<section id="hero" class="d-flex align-items-center" style="height:50vh">
+  <div class="container position-relative text-center text-lg-start" data-aos="zoom-in" data-aos-delay="100">
+    <div class="row">
+      <div class="col-lg-8">
+        <h1>Welcome to <span>Sippit-Menu</span></h1>
+        <h2>Delivering liquor at your door steps</h2>
+      </div>
+      <div class="col-lg-4 d-flex align-items-center justify-content-center position-relative" data-aos="zoom-in"
+        data-aos-delay="200">
+        <a href="https://www.youtube.com/watch?v=u6BOC7CDUTQ" class="glightbox play-btn"></a>
+      </div>
+    </div>
+  </div>
+</section><!-- End Hero -->
+
+{% comment %} {% load static %} {% endcomment %}
+<section id="why-us" class="why-us">
+  <div class="container-fluid" data-aos="fade-up" style="display: flex;flex-direction: column;">
+    <div style="display: flex;">
+      <div class="section-title" style="flex-grow: 2;">
+        <h2>Wellcome to store</h2>
+        <p>Sippit provides..</p>
+      </div>
+      ﻿
+      <div class="dropdown" style="flex-wrap: 1;">
+        <button class="dropdown-toggle header-action-btn sort" onclick="activefun()" data-bs-toggle="dropdown"
+          style="width: 5rem;border-radius: 10px;border: none;background-color: #b07c22;"><span
+            class="material-symbols-outlined">
+            sort
+          </span> <i class="fa fa-angle-down"></i></button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li><a class="dropdown-item" href="/products/?ATOZ={% for i in catprods%}{{i.id}}{%endfor%}">Name, A to Z</a>
+          </li>
+          <li><a class="dropdown-item" href="/products/?ZTOA={% for i in catprods%}{{i.id}}{%endfor%}">Name, Z to A</a>
+          </li>
+          <li><a class="dropdown-item" href="/products/?PRICEL_H={% for i in catprods%}{{i.id}}{%endfor%}">Price, low to
+              high</a></li>
+          <li><a class="dropdown-item" href="/products/?PRICEH_L={% for i in catprods%}{{i.id}}{%endfor%}">Price, high
+              to low</a></li>
+          <li><a class="dropdown-item" href="#">Sort By new</a></li>
+          <li><a class="dropdown-item" href="#">Sort By old</a></li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="mennu" style="display: flex;">
+      <div class="adds_filters">
+        <div class="heads" data-aos="flip-up" style="display:inline">
+          <h3 class="my-2 text-center text-light"
+            style="border-radius: 10px;position: relative;background-color:#b07c22;">
+            Filters
+          </h3>
+        </div>
+        <div class="filters_menu" style="flex-shrink:1;width: 10rem;height: fit-content;padding: 10px 2px;">
+          <div class="Types">
+            <hr style="color: #b07c22;">
+            <h5>Types</h5>
+            <hr style="color: #b07c22;">
+            <ul>
+              <a href="/products/?categories=">
+                <li class="Types_list_all active" id="cate">All</li>
+              </a>
+              {% for cat in categories %}
+              <li><a href="/products/?categories={{cat.id}}" class="Types_list list">{{cat.Category}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="Brands">
+            <hr style="color: #b07c22;">
+            <h5>Brands</h5>
+            <hr style="color: #b07c22;">
+
+            <ul>
+              {% for bra in brands %}
+              <li><a href="/products/?brands={{bra.id}}" class="Brands_list list">{{bra.Brand_name}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="Price">
+            <hr style="color: #b07c22;">
+            <h5>Prices</h5>
+            <hr style="color: #b07c22;">
+            <ul>
+              <a href="/products/?prices=">
+                <li class="Price_list active">All</li>
+              </a>
+              {% for pri in prices %}
+              <li><a href="/products/?prices={{pri.id}}" class="Price_list list"
+                  style="font-size: small;">{{pri.price}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="prods">
+        <div class="rows" style="display: flex; flex-wrap: wrap;">
+          {% for product in catprods %}
+          <div class="" style="margin: 20px 10px;flex-shrink: 12;">
+            <div class="box_menu">
+              <img src="/media/{{product.image}}" class="card-img-top" alt="not found"
+                style="border-radius: 10px;height:220px;width:200px" />
+              <div data-aos="flip-up" data-aos-delay="50" style="padding: 0%;">
+                <a href="/product_view/{{product.id}}">
+                  <h6 class="card-title mt-2" id="namepr{{i.id}}"
+                    style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: #ffc469;">
+                    {{product.name|slice:"0:16"}}..</h6>
+                </a><small>
+                  <h6 style="font-size: small;color: #ffc469;">{{product.product_categore}}</h6>
+                </small>
+                <p style="font-size: small;">{{product.product_desc|slice:"0:50"}}...</p>
+                <hr>
+                <div style="display: flex;justify-content: space-between;">
+                  <h7 style="color: #ffc469;">
+                    <span id="pricepr{{i.id}}">{{product.price}}&#8377;</span>
+                  </h7>
+                  <h7 style="color: #ffc469;">
+                    <span id="pricepr{{i.id}}">{{product.volume}}ml</span>
+                  </h7>
+                </div>
+                <hr>
+                <div style="display: flex;">
+                  <div id="divpr{{i.id}}" class="divpr" style="flex-grow: 3;;">
+                    <a href="{% url 'cart_add' product.id %}"><button class="material-symbols-outlined cart_button"
+                        style="width:10rem;height: 100%;background-color: #ffc469;border: none;border-radius: 10px;">
+                        shopping_bag<i class="fa-solid fa-cart-shopping"></i>
+                      </button></a>
+                  </div>
+                  <div style="flex-shrink: 1;">
+                    <button type="button" class="material-symbols-outlined eye" data-bs-toggle="modal"
+                      data-bs-target="#exampleModal-{{forloop.counter}}"
+                      style="height: max-content;color: #fff;background:none;border: none;">
+                      visibility
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</section>
+
+{% for product in catprods %}
+<div class="modal fade" id="exampleModal-{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content" style="background-color: #191919;border-radius: 10px;padding: 20px 10px;">
+      <div class="modal-body" style="display: flex;justify-content: space-between;">
+        <div class="modal-image">
+          <img src="/media/{{product.image}}" class="card-img-top" alt="not found"
+            style="border-radius: 10px;box-sizing: border-box;height: 295.430px;width: 295.430px;" />
+        </div>
+        <div data-aos="flip-up" data-aos-delay="50"
+          style="padding: 0px 10px;display: flex;flex-direction: column;justify-content: space-between;">
+          <h2 class="card-title mt-2" id="namepr{{i.id}}"
+            style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: #b07c22;">
+            {{product.name}}
+          </h2>
+          <h5 style="font-size: small;">{{product.product_categore}}
+          </h5>
+          <hr style="color: #b07c22;">
+          <h5 style="font-size: medium;color: #fff;font-family:sans-serif;">{{product.product_desc}}</h5>
+          <h4>
+            Price: <span id="pricepr{{i.id}}"
+              style="color:#b07c22;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">{{product.price}}</span>
+          </h4>
+          <div id="divpr{{i.id}}" class="divpr" style="display: flex;justify-content: space-evenly;">
+            <div id="divpr{{i.id}}" class="divpr" style="flex-grow: 3;;">
+              <a href="{% url 'cart_add' product.id %}"><button class="material-symbols-outlined cart_button"
+                  style="width:10rem;height: 100%;background-color: #ffc469;border: none;border-radius: 10px;">
+                  shopping_bag<i class="fa-solid fa-cart-shopping"></i>
+                </button></a>
+            </div>
+
+            <!--  -->
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn-close" style="background-color: #b07c22;opacity: 1;" data-bs-dismiss="modal"
+      aria-label="Close"></button>
+
+  </div>
+</div>
+{%endfor%}
+
+{% endblock body %}
+
+<!-- End Sippit_products Section -->
+{% block script %}
+
+<script>
+  function activefun() {
+    let Filterlist = document.querySelector('.sort').classList.add('active')
+    console.log(Filterlist)
+  }
+  activefun()
+</script>
+{% endblock script %}

@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel&family=El+Messiri&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static '/assets/css/signup.css'%}">
+<style>
+        body{
+            background-color:  #0c0b09;
+        }
+        .warning_cancel{
+            background-color: whitesmoke;border: none;width: 20px;border-radius: 4px;
+        }
+        .warning_cancel:hover{
+            background-color: #0c0b09;
+            color: aliceblue;
+        }
+    </style>
+
+    <title>Sippit-signup</title>
+</head>
+
+<body>
+    <div class="box">
+        <header id="header">
+            <div class="containerh">
+              <h1 class="logo"><a href="/">Sippit</a></h1>        
+            </div>
+        </header>
+        
+        <div class="form">
+            <form aciton="/auth/signup/" name="Form" id="fox" method="post">
+                {% csrf_token %}
+                <h2 style="color: #0c0b09;">Signup</h2>
+                <div class="a">
+                 {% comment %} <label for="uname">
+                    <div class="formdesign" id="uname">
+                        <input type="text" name="uname" id="username" required>
+                        <h3>Username</h3><span class="errorform"> </span>
+                    </div>
+                </label>  {% endcomment %}
+                <label for="mail">
+                    <div class="formdesign" id="email">
+                        <input type="email" name="email" id="mail" required>
+                        <h3>Email</h3><span class="errorform"> </span>
+                    </div>
+                </label>
+                <label for="p" id="passu">
+                    <div class="formdesign" id="pass">
+                        <input type="password" name="passw" id="p" required>
+                        <h3>Password:</h3> <span class="errorform"></span>
+                    </div>
+                </label>
+                <label for="cp">
+                    <div class="formdesign" id="cpass">
+                        <input type="password" name="cpassw" id="cp" required>
+                        <h3>Confirm Password:</h3><span class="errorform"></span>
+                    </div>
+                </label>
+            </div>
+            {% for message in messages %}
+                <p class="warning_cancel_p" style="background-color: rgb(228, 177, 89,0.75);text-align: center;width: 250px;border-radius: 4px;">{{message}} <button class="warning_cancel" onclick="disable()" style="display: '{{diss}}';">x</button></p>
+            {% endfor %}
+            <div class="btt">
+                <button class="but" type="submit" value="Submit" style="font-size: medium;" id="submit">Submit</button>
+            </div>
+            <div style="display: flex;">
+                <p style="color: #0c0b09;">Already a User?</p><a  href="/auth/login/" style="color: rgb(197, 137, 59,0.8);">login</a>
+            </div>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    // disable()
+    const disable=()=>{
+        document.querySelector('.warning_cancel').style.display='none';
+        document.querySelector('.warning_cancel_p').style.display='none';
+    }
+</script>
+</html>

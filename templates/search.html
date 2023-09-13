@@ -1,0 +1,142 @@
+{% extends 'inner-pages.html' %}
+{% block title %}
+Products{% endblock title %}
+{% block style %}
+  <style>
+    .modal-lg{
+      width: 50em;
+      margin: auto;
+    }
+    h6{
+    color:#b07c22;
+    }
+    h6:hover{
+     color:#191919
+    }
+  </style>
+{% endblock style %}
+{% block search %}
+<form class="d-flex" role="search" method="get" action="/search/">
+  <input class="form-control me-2" type="search" placeholder="Search" style="border: none;" aria-label="Search" name="query_pass" id="query_pass">
+  <button class="btn search-button" style="background-color:#b07c22;" type="submit">Search</button>
+</form>
+{% endblock search %}
+{% block cart %}
+
+<li id="ccc" style="margin:0px 20px"><a class="nav-link scrollto"><button
+  style="background:none;border: none;color:white;display:flex;flex-direction:row;margin: 0px;"
+  class="material-symbols-outlined" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+  shopping_bag
+  <span class="position-absolute top-0 start-100 translate-middle badge-sm rounded-circle bg-warning text-black" style="font-family: 'El Messiri', sans-serif; font-size:smaller;padding:0px 4px;border-radius: 50%;">
+    {{request.session.cart|length}}
+    <span class="visually-hidden">unread messages</span>
+  </span>
+  
+</button></a></li>
+{% endblock cart %}
+
+{% block body %}
+{% load static %}
+<div style="margin-top:100px ;">
+    <h2>Search Results:</h2>
+    {% if catprod|length <= 0 %}
+    <h3>Not Found☹️</h3>
+    {% endif %}
+    <hr style="color: #b07c22;width: 70%;">
+</div>
+<section id="why-us" class="why-us">
+    
+    <div class="container" data-aos="fade-up" style="display: flex;flex-direction: column;">
+    
+      <div class="mennu" style="display: flex;">
+            <div class="prods">
+              <div class="rows" style="display: flex; flex-wrap: wrap;">
+                {% for i in catprod %}
+                <div class="" style="margin: 20px 10px;">
+                  <div class="box_menu">
+                    <img src="/media/{{i.image}}" class="card-img-top" alt="not found" height="200" width="auto"
+                      style="border-radius: 10px;" />
+                    <div data-aos="flip-up" data-aos-delay="50" style="padding: 0%;">
+                      <h6 class="card-title mt-2" id="namepr{{i.id}}"
+                        style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                        {{i.name|slice:"0:16"}}..</h6><small><h6>{{i.product_categore}}</h6></small>
+                      <p style="font-size: small;">{{i.product_desc|slice:"0:50"}}...</p>
+                      <h7>
+                        Price:<span id="pricepr{{i.id}}">{{i.price}}</span>
+                      </h7>
+                      <span id="divpr{{i.id}}" class="divpr" style="display: flex;justify-content: space-evenly;">
+                        <button id="pr{{i.id}}" class="btn btn-warning cart mt-0" style="border: none;">
+                          AddToCart <i class="fa-solid fa-cart-shopping"></i>
+                        </button>
+                        <button type="button" class="material-symbols-outlined eye" data-bs-toggle="modal" data-bs-target="#exampleModal-{{forloop.counter}}" style="height: max-content;color: #fff;background:none;border: none;">
+                          visibility
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                {%endfor%}
+              </div>
+           
+            </div>
+          </div>
+        </div>
+        
+  </section>
+  {% for i in catprods %}
+    
+  <div class="modal fade" id="exampleModal-{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"  >
+      <div class="modal-content" style="background-color: #191919;border-radius: 10px;padding: 20px 10px;">
+        <!-- <div class="modal-header">
+        </div> -->
+        <div class="modal-body" style="display: flex;justify-content: space-between;">
+          <div class="modal-image" >
+            <img src="/media/{{i.product_image}}" class="card-img-top" alt="not found" 
+                      style="border-radius: 10px;box-sizing: border-box;height: 295.430px;width: 295.430px;" />
+          </div>
+          <div data-aos="flip-up" data-aos-delay="50" style="padding: 0px 10px;display: flex;flex-direction: column;justify-content: space-between;">
+            <h2 class="card-title mt-2" id="namepr{{i.id}}"
+              style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: #b07c22;">
+              {{i.product_name}}
+            </h2>
+            <h5 style="font-size: small;">{{i.product_categore}}
+            </h5>
+            <hr style="color: #b07c22;">
+            <h5 style="font-size: medium;color: #fff;font-family:sans-serif;">{{i.product_desc}}</h5>
+            <h4>
+              Price: <span id="pricepr{{i.id}}" style="color:#b07c22;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">{{i.product_price}}</span>
+            </h4>
+            <div id="divpr{{i.id}}" class="divpr" style="display: flex;justify-content: space-evenly;">
+              <button id="pr{{i.id}}" class="btn btn-warning cart mt-0" style="border: none;">
+                AddToCart <i class="fa-solid fa-cart-shopping"></i>
+              </button>
+              <!--  -->
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+      </div>
+      <button type="button" class="btn-close" style="background-color: #b07c22;opacity: 1;" data-bs-dismiss="modal" aria-label="Close"></button>
+
+    </div>
+  </div>
+  {% endfor %}
+
+  {% endblock body %}
+
+  <!-- End Sippit_products Section -->
+  {% block script %}
+    
+  <script>
+   function activefun(){
+    let Filterlist=document.querySelector('.sort').classList.add('active')
+    console.log(Filterlist)
+   }
+    activefun()
+   </script>
+  {% endblock script %}
+  
